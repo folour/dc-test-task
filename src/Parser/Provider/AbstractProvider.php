@@ -26,6 +26,8 @@ abstract class AbstractProvider implements ProviderInterface
     {
         $currentPage = 1;
 
+        yield $this->getHeaders();
+
         while ($currentPage++ <= $this->pagesLimit) {
             $response = $this->loadPage(sprintf($this->getUrl(), $currentPage));
             try {
@@ -57,5 +59,5 @@ abstract class AbstractProvider implements ProviderInterface
 
     abstract protected function parsePageData(string $pageContent): array;
     abstract protected function getUrl(): string;
-
+    abstract protected function getHeaders(): array;
 }

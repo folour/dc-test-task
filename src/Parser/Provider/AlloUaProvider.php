@@ -39,4 +39,9 @@ final class AlloUaProvider extends AbstractProvider implements ProviderInterface
     {
         return self::URL;
     }
+
+    protected function getHeaders(): array
+    {
+        return [['Name', 'Image', 'Link', 'Price']];
+    }
 }

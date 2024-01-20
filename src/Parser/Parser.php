@@ -34,17 +34,13 @@ final class Parser
         foreach (self::PROVIDERS as $provider => $outputFilename) {
             /** @var ProviderInterface $provider */
             $provider = new $provider($this->client, $this->pagesLimit);
-            $generator = $provider->iteratePages();
-            $headers = array_keys($generator->current()[0]);
-            $headers = $this->serializer->encode($headers, 'csv', [CsvEncoder::NO_HEADERS_KEY => true]);
             $filepath = $this->projectDir.'/'.$outputFilename;
             if ($this->filesystem->exists($filepath)) {
                 $this->filesystem->remove($filepath);
             }
-            $this->filesystem->appendToFile($filepath, $headers);
 
             try {
-                foreach ($generator as $pageData) {
+                foreach ($provider->iteratePages() as $pageData) {
                     $csvContent = $this->serializer->encode($pageData, 'csv', [CsvEncoder::NO_HEADERS_KEY => true]);
 
                     $this->filesystem->appendToFile($filepath, $csvContent);
